@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@using SinemaApp.Models
+@model List<Film>;
+<div class="container text-center">
+    <h1 class="mb-4">Gösterimdeki Filmler</h1>
+    <div class="row">
+        @foreach (Film film in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm border-light" style="border-radius: 12px;">
+                    <img class="card-img-top" src="..." alt="Film Fotolari Guncellenecek" style="border-top-left-radius: 12px; border-top-right-radius: 12px;">
+                    <div class="card-body">
+                        <h5 class="card-title">@film.Isim</h5>
+                        <p class="card-text">@film.Aciklama</p>
+                        <p class="card-text"><strong>Dil:</strong> @film.Dil</p>
+                        <p class="card-text"><strong>Süre:</strong> @film.Sure dakika</p>
+                        <a asp-controller="Sinema" asp-action="Detay" asp-route-id="@film.Id" class="btn btn-primary">Sinemaları Gör</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+

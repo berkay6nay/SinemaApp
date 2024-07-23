@@ -1,0 +1,227 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@using SinemaApp.Models
+@model List<Film>
+
+<div>
+    <a class="btn btn-success modalEkle" data-bs-toggle="modal" data-bs-target="#myModalEkle">Film Ekle</a>
+</div>
+
+@foreach(Film film in Model)
+{
+    <div class="card" style="width: 25rem;">
+        <img class="card-img-top" src="..." alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title">@film.Isim</h5>
+            <p class="card-text">@film.Aciklama</p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Süre : @film.Sure dakika.</li>
+            <li class="list-group-item">Dil : @film.Dil</li>
+            <li class="list-group-item">Tür : @film.Tur</li>
+            <li class="list-group-item">Cikis Tarihi : @film.CikisTarihi</li>
+        </ul>
+        <div class="card-body">
+            <a class="btn modalGuncelle" data-bs-toggle = "modal" 
+            data-bs-target = "#myModalGuncelle" data-filmId = "@film.Id" data-filmIsim ="@film.Isim" data-filmAciklama = "@film.Aciklama" 
+            data-filmSure = "@film.Sure" data-filmDil ="@film.Dil" data-filmTur ="@film.Tur" data-filmCikisTarihi ="@film.CikisTarihi">
+                Güncelle</a>
+            <a  class="btn">Gösterim Ekle</a>
+        </div>
+    </div>
+}
+
+<div class="modal" tabindex="-1" id="myModalGuncelle">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Film Guncelle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mesaj"></p>
+                <form action="" method="post">
+                    <div>
+                        <label></label>
+                        <input type="hidden" class="form-control formId" name="Id" />
+                    </div>
+
+                    <div>
+                        <label> Film İsmi :</label>
+                        <input class="form-control formAd" type="text" name="Isim" placeholder="Filmin yeni ismini giriniz" />
+                    </div>
+
+                    <div>
+                        <label> Aciklama :</label>
+                        <input class="form-control formAciklama " type="text" name="Aciklama" placeholder="Filmin yeni aciklamasini giriniz" />
+                    </div>
+                    <div>
+                        <label> Süre :</label>
+                        <input class="form-control formSure" type="number" name="Sure" placeholder="Filmin yeni süresini giriniz" />
+                    </div>
+                    <div>
+                        <label> Dil :</label>
+                        <input class="form-control formDil" type="text" name="Dil" placeholder="Filmin yeni dilini giriniz" />
+                    </div>
+                    <div>
+                        <label> Tür :</label>
+                        <input class="form-control formTur" type="text" name="Tur" placeholder="Filmin yeni turunu giriniz" />
+                    </div>
+                    <div>
+                        <label> Tarih :</label>
+                        <input class="form-control formTarih" type="datetime-local" name="CikisTarihi" placeholder="Filmin yeni cikis tarihini giriniz" />
+                    </div>
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary filmGuncelle">Guncelle</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" id="myModalEkle">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Film Ekle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mesaj"></p>
+                <form id = "filmEkle">
+                    <div>
+                        <label> Film İsmi :</label>
+                        <input class="form-control formEkleAd" type="text" name="Isim" placeholder="Filmin ismini giriniz" />
+                    </div>
+
+                    <div>
+                        <label> Aciklama :</label>
+                        <input class="form-control formEkleAciklama " type="text" name="Aciklama" placeholder="Filmin aciklamasini giriniz" />
+                    </div>
+                    <div>
+                        <label> Süre :</label>
+                        <input class="form-control formEkleSure" type="number" name="Sure" placeholder="Filmin süresini giriniz" />
+                    </div>
+                    <div>
+                        <label> Dil :</label>
+                        <input class="form-control formEkleDil" type="text" name="Dil" placeholder="Filmin  dilini giriniz" />
+                    </div>
+                    <div>
+                        <label> Tür :</label>
+                        <input class="form-control formEkleTur" type="text" name="Tur" placeholder="Filmin turunu giriniz" />
+                    </div>
+                    <div>
+                        <label> Tarih :</label>
+                        <input class="form-control formEkleTarih" type="datetime-local" name="CikisTarihi" placeholder="Filmin cikis tarihini giriniz" />
+                    </div>
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary filmEkle">Film Ekle</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Scripts{
+    <script>
+        $(".modalGuncelle").click(
+            function () {
+
+                var id = $(this).attr("data-filmId");
+                var isim = $(this).attr("data-filmIsim");
+                var aciklama = $(this).attr("data-filmAciklama");
+                var sure = $(this).attr("data-filmSure");
+                var dil = $(this).attr("data-filmDil");
+                var tur = $(this).attr("data-filmTur");
+                var tarih = $(this).attr("data-filmCikisTarih");
+
+                $(".formId").val(id);
+                $(".formAd").val(isim);
+                $(".formAciklama").val(aciklama);
+                $(".formSure").val(sure);
+                $(".formDil").val(dil);
+                $(".formTur").val(tur);
+                $(".formTarih").val(tarih);
+
+
+            }
+        );
+        $(".filmGuncelle").click(
+            function () {
+                var formData = {
+                    Id: $(".formId").val(),
+                    Isim: $(".formAd").val(),
+                    Aciklama: $(".formAciklama").val(),
+                    Sure: $(".formSure").val(),
+                    Dil: $(".formDil").val(),
+                    Tur: $(".formTur").val(),
+                    CikisTarihi: $(".formTarih").val()
+                };
+                $.ajax(
+                    {
+                        type: "POST",
+                        url: "/Film/Guncelle/",
+                        data: formData,
+                        success: function (durum) {
+                            if (durum == "basarili") {
+                                window.location.replace("/Film/Index");
+                            }
+                            else {
+                                $(".modal-body>p.mesaj").html("Hata olustu");
+                            }
+                        }
+                    }
+                )
+            }
+        );
+        $(".filmEkle").click(
+            function () {
+                event.preventDefault();
+                var formData = {
+                    Isim: $(".formEkleAd").val(),
+                    Aciklama: $(".formEkleAciklama").val(),
+                    Sure: $(".formEkleSure").val(),
+                    Dil: $(".formEkleDil").val(),
+                    Tur: $(".formEkleTur").val(),
+                    CikisTarihi: $(".formEkleTarih").val()
+                };
+
+                console.log("Form Data:", formData);
+                $.ajax(
+                    {
+                        type: "POST",
+                        url: "/Film/Ekle/",
+                        data: formData,
+                        success: function (durum) {
+                            if (durum == "basarili") {
+                                window.location.replace("/Film/Index");
+                            }
+                            else {
+                                $(".modal-body>p.mesaj").html("Hata olustu");
+                            }
+                        }
+                    }
+                )
+            }
+        );
+
+    </script>
+
+
+}

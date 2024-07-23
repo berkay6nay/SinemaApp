@@ -1,0 +1,31 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@using SinemaApp.Models
+@model List<Sinema>
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th >İsim</th>
+            <th >Adres</th>
+            <th >Salon Ekle</th>
+            <th >Guncelle</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(Sinema sinema in Model){
+            <tr>
+                <td>@sinema.Isim</td>
+                <td>@sinema.Adres</td>
+                <td><a> Salon Ekle </a></td>
+                <td><a> Guncelle </a></td>
+            </tr>
+        }
+        
+    </tbody>
+</table>
