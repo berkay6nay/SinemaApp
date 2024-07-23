@@ -20,5 +20,7 @@ namespace SinemaApp.Controllers
             ViewBag.gosterimler = gosterimler;
             return View();
         }
+
+       
     }
 }

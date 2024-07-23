@@ -1,0 +1,64 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    
+}
+@using SinemaApp.Models;
+@model List<Salon>
+
+    <p class="mesaj"></p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Salon İsmi</th>
+                <th>Toplam Koltuk</th>
+                <th>Koltuk Ekle</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Salon salon in Model)
+            {
+                <tr>
+
+                    <td>@salon.Isim</td>
+                    <td>@salon.SinemaSalonuKoltuks.Count</td>
+                    <td><button class="btn koltukEkle" data-salonId = "@salon.Id"> Koltuk Ekle </button></td>
+                    
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+    @section Scripts{
+        <script>
+        $(".koltukEkle").click(
+            function () {
+                var id = $(this).attr("data-salonId");
+                $.ajax(
+                    {
+                        type: "POST",
+                        url: "/Koltuk/Ekle/",
+                        data: {Id : id},
+                        success: function (durum) {
+                            if (durum == "basarili") {
+                                window.location.replace("/Salon/Listele" + id);
+                            }
+                            else {
+                                $(".p.mesaj").html("Hata olustu");
+                            }
+                        }
+                    }
+                )
+            }
+        );
+        </script>
+    }
+
+
+
+
+

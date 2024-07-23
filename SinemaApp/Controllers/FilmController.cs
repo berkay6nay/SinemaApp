@@ -13,16 +13,17 @@ namespace SinemaApp.Controllers
             return View(filmler);
         }
 
-        public string Guncelle(int id , String Isim , String Aciklama, int Sure , String Dil , String Tur , DateTime CikisTarihi) 
+        public string Guncelle(int Id , String Isim , String Aciklama, int Sure , String Dil , String Tur , DateTime CikisTarihi , String FotoUrl) 
         {
             Film film = new Film();
-            film.Id = id;
+            film.Id = Id;
             film.Isim = Isim;
             film.Aciklama = Aciklama;
             film.Sure = Sure;
             film.Dil = Dil;
             film.Tur = Tur;
             film.CikisTarihi = CikisTarihi;
+            film.FotoUrl = FotoUrl;
             try
             {
                 db.Films.Update(film);
@@ -37,7 +38,7 @@ namespace SinemaApp.Controllers
         }
 
         [HttpPost]
-        public string Ekle(String Isim, String Aciklama, int Sure, String Dil, String Tur, DateTime CikisTarihi)
+        public string Ekle(String Isim, String Aciklama, int Sure, String Dil, String Tur, DateTime CikisTarihi ,IFormFile photo)
         {
             Film film = new Film
             {
@@ -51,6 +52,21 @@ namespace SinemaApp.Controllers
 
             try
             {
+                if (photo != null && photo.Length > 0)
+                {
+                    var fileName = Path.GetFileName(photo.FileName);
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+
+                  
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        photo.CopyTo(stream);
+                    }
+
+                   
+                    film.FotoUrl = $"/images/{fileName}";
+                }
+
                 db.Films.Add(film);
                 db.SaveChanges();
                 return "basarili";

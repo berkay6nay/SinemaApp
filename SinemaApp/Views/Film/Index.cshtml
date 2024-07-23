@@ -13,7 +13,14 @@
 @foreach(Film film in Model)
 {
     <div class="card" style="width: 25rem;">
+        @if (film.FotoUrl != null)
+        {
+            <p>@film.FotoUrl</p>
+            <img class="card-img-top img-fluid" src="@film.FotoUrl" alt="Film Fotoğrafı" />
+        }
+        else{
         <img class="card-img-top" src="..." alt="Card image cap">
+        }
         <div class="card-body">
             <h5 class="card-title">@film.Isim</h5>
             <p class="card-text">@film.Aciklama</p>
@@ -27,7 +34,7 @@
         <div class="card-body">
             <a class="btn modalGuncelle" data-bs-toggle = "modal" 
             data-bs-target = "#myModalGuncelle" data-filmId = "@film.Id" data-filmIsim ="@film.Isim" data-filmAciklama = "@film.Aciklama" 
-            data-filmSure = "@film.Sure" data-filmDil ="@film.Dil" data-filmTur ="@film.Tur" data-filmCikisTarihi ="@film.CikisTarihi">
+            data-filmSure = "@film.Sure" data-filmDil ="@film.Dil" data-filmTur ="@film.Tur" data-filmCikisTarihi ="@film.CikisTarihi" data-filmFotoUrl ="@film.FotoUrl">
                 Güncelle</a>
             <a  class="btn">Gösterim Ekle</a>
         </div>
@@ -43,7 +50,7 @@
             </div>
             <div class="modal-body">
                 <p class="mesaj"></p>
-                <form action="" method="post">
+                <form id = "filmFormGuncelle">
                     <div>
                         <label></label>
                         <input type="hidden" class="form-control formId" name="Id" />
@@ -75,13 +82,17 @@
                         <input class="form-control formTarih" type="datetime-local" name="CikisTarihi" placeholder="Filmin yeni cikis tarihini giriniz" />
                     </div>
 
+                    <div>
+                        <label></label>
+                        <input type="hidden" class="form-control formFotoUrl" name="FotoUrl" />
+                    </div>
+
 
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary filmGuncelle">Guncelle</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
-
             </div>
         </div>
     </div>
@@ -96,7 +107,7 @@
             </div>
             <div class="modal-body">
                 <p class="mesaj"></p>
-                <form id = "filmEkle">
+                <form id = "filmForm">
                     <div>
                         <label> Film İsmi :</label>
                         <input class="form-control formEkleAd" type="text" name="Isim" placeholder="Filmin ismini giriniz" />
@@ -122,14 +133,15 @@
                         <label> Tarih :</label>
                         <input class="form-control formEkleTarih" type="datetime-local" name="CikisTarihi" placeholder="Filmin cikis tarihini giriniz" />
                     </div>
-
-
+                    <div class="mb-3">
+                        <label>Fotoğraf:</label>
+                        <input class="form-control" type="file" name="photo" />
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary filmEkle">Film Ekle</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
-
             </div>
         </div>
     </div>
@@ -142,7 +154,6 @@
     <script>
         $(".modalGuncelle").click(
             function () {
-
                 var id = $(this).attr("data-filmId");
                 var isim = $(this).attr("data-filmIsim");
                 var aciklama = $(this).attr("data-filmAciklama");
@@ -150,6 +161,7 @@
                 var dil = $(this).attr("data-filmDil");
                 var tur = $(this).attr("data-filmTur");
                 var tarih = $(this).attr("data-filmCikisTarih");
+                var foto_url = $(this).attr("data-filmFotoUrl");
 
                 $(".formId").val(id);
                 $(".formAd").val(isim);
@@ -158,8 +170,7 @@
                 $(".formDil").val(dil);
                 $(".formTur").val(tur);
                 $(".formTarih").val(tarih);
-
-
+                $(".formFotoUrl").val(foto_url);
             }
         );
         $(".filmGuncelle").click(
@@ -171,13 +182,14 @@
                     Sure: $(".formSure").val(),
                     Dil: $(".formDil").val(),
                     Tur: $(".formTur").val(),
-                    CikisTarihi: $(".formTarih").val()
+                    CikisTarihi: $(".formTarih").val(),
+                    FotoUrl: $(".formFotoUrl").val()
                 };
                 $.ajax(
                     {
                         type: "POST",
                         url: "/Film/Guncelle/",
-                        data: formData,
+                        data: formData,           
                         success: function (durum) {
                             if (durum == "basarili") {
                                 window.location.replace("/Film/Index");
@@ -193,14 +205,9 @@
         $(".filmEkle").click(
             function () {
                 event.preventDefault();
-                var formData = {
-                    Isim: $(".formEkleAd").val(),
-                    Aciklama: $(".formEkleAciklama").val(),
-                    Sure: $(".formEkleSure").val(),
-                    Dil: $(".formEkleDil").val(),
-                    Tur: $(".formEkleTur").val(),
-                    CikisTarihi: $(".formEkleTarih").val()
-                };
+                var formData = new FormData($("#filmForm")[0]);
+
+
 
                 console.log("Form Data:", formData);
                 $.ajax(
@@ -208,6 +215,8 @@
                         type: "POST",
                         url: "/Film/Ekle/",
                         data: formData,
+                        contentType: false, 
+                        processData: false,
                         success: function (durum) {
                             if (durum == "basarili") {
                                 window.location.replace("/Film/Index");
@@ -220,8 +229,5 @@
                 )
             }
         );
-
     </script>
-
-
 }
