@@ -4,6 +4,12 @@
 @{
 }
 @using SinemaApp.Models
+
+@{
+    var film = ViewBag.film as Film;
+    var gosterimler = ViewBag.gosterimler as List<Gosterim>;
+}
+
 <h1>Bu sayfada gösterimler de listelenecek</h1>
 
 
@@ -11,7 +17,7 @@
     <div class="row justify-content-center">
         <div class="col-md-4 mb-4">
             <div class="card shadow-lg border-light" style="border-radius: 12px;">
-                <img class="card-img-top" src="..." alt="Film Fotolari Guncellenecek" style="border-top-left-radius: 12px; border-top-right-radius: 12px;">
+                <img class="card-img-top" src="@film.FotoUrl" alt="" style="border-top-left-radius: 12px; border-top-right-radius: 12px;">
                 <div class="card-body">
                     <h5 class="card-title">@ViewBag.film.Isim</h5>
                     <p class="card-text mb-2"><strong>Aciklama:</strong> @ViewBag.film.Aciklama</p>
@@ -24,6 +30,37 @@
         </div>
     </div>
 </div>
+
+@if (gosterimler != null && gosterimler.Count > 0)
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Başlangıç</th>
+                <th>Bitiş</th>
+                <th>Film</th>
+                <th>Salon</th>
+                <th>Sinema</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var gosterim in gosterimler)
+            {
+                <tr>
+                    <td>@gosterim.Baslangic</td>
+                    <td>@gosterim.Bitis</td>
+                    <td>@gosterim.Film.Isim</td>
+                    <td>@gosterim.Salon?.Isim</td>
+                    <td>@gosterim.Salon?.Sinema?.Isim</td> <!-- Access Sinema through Salon -->
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Bu film için gösterim bulunmamaktadır.</p>
+}
 
 
 

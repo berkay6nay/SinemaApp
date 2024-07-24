@@ -13,8 +13,8 @@
         <thead>
             <tr>
                 <th>Salon İsmi</th>
-                <th>Toplam Koltuk</th>
-                <th>Koltuk Ekle</th>
+                <th>Detaylari Görüntüle</th>
+                
                 
             </tr>
         </thead>
@@ -24,9 +24,7 @@
                 <tr>
 
                     <td>@salon.Isim</td>
-                    <td>@salon.SinemaSalonuKoltuks.Count</td>
-                    <td><button class="btn koltukEkle" data-salonId = "@salon.Id"> Koltuk Ekle </button></td>
-                    
+                    <td><a asp-controller="Salon" asp-action="Detay" asp-route-id="@salon.Id" >Detaylara Git</a></td>
                 </tr>
             }
 

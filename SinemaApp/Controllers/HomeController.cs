@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SinemaApp.Models;
 using System.Diagnostics;
 
@@ -16,7 +17,10 @@ namespace SinemaApp.Controllers
 
         public IActionResult Index()
         {
-            List<Film> filmler = db.Films.ToList();
+            var filmler = db.Films
+            .Include(film => film.Gosterims)
+            .Where(film => film.Gosterims.Any())
+            .ToList();
             return View(filmler);
         }
 

@@ -34,5 +34,21 @@ namespace SinemaApp.Controllers
             return View(salons);
         }
 
+        [HttpGet]
+        public IActionResult Detay(int id) 
+        {
+            Salon salon = db.Salons.FirstOrDefault(x=>x.Id == id);
+            List<SinemaSalonuKoltuk> koltuks = db.SinemaSalonuKoltuks.Where(x=> x.SalonId == id).ToList();
+            List<Gosterim> gosterims = db.Gosterims.Where(x=> x.SalonId==id).ToList();
+            Sinema sinema = db.Sinemas.FirstOrDefault(x => x.Id == salon.SinemaId);
+                
+            int koltuk_sayisi = koltuks.Count;
+
+            ViewBag.Sinema = sinema;
+            ViewBag.Salon = salon;
+            ViewBag.koltukSayisi = koltuk_sayisi;
+            ViewBag.gosterimler = gosterims;
+            return View();
+        }
     }
 }

@@ -21,7 +21,7 @@
             <tr>
                 <td>@sinema.Isim</td>
                 <td>@sinema.Adres</td>
-                <td><a> Guncelle </a></td>
+                <td><a class="btn modalSinemaGuncelle" data-bs-toggle="modal" data-bs-target="#myModalSinemaGuncelle" data-sinemaGuncelleId ="@sinema.Id" data-sinemaIsim = "@sinema.Isim" data-sinemaAdres ="@sinema.Adres"> Guncelle </a></td>
                 <td><a class="btn modalSalonEkle" data-bs-toggle="modal" data-bs-target="#myModalSalonEkle" data-sinemaId ="@sinema.Id"> Salon Ekle </a></td>
                 <td><a asp-controller="Salon" asp-action="Listele" asp-route-id="@sinema.Id" > Salonlari Görüntüle </a> </td>
             </tr> 
@@ -58,6 +58,37 @@
     </div>
 </div>
 
+<div class="modal" tabindex="-1" id="myModalSinemaGuncelle">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Film Ekle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mesaj"></p>
+                <form id="SinemaGuncelleForm">
+                    <div>
+                        <input class="form-control formGuncelleSinemaId" type="hidden" name="Id" />
+                    </div>
+                    <div>
+                        <label> Sinema İsmi: </label>
+                        <input class="form-control formGuncelleSinemaIsim" type="text" name="Isim" placeholder="Sinemanın yeni ismini giriniz" />
+                    </div>
+                    <div>
+                        <label> Sinema Adresi: </label>
+                        <input class="form-control formGuncelleSinemaAdres" type="text" name="Adres" placeholder="Sinemanın yeni adresini giriniz" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary sinemaGuncelle">Guncelle</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts{
     <script>
         $(".modalSalonEkle").click(
@@ -69,13 +100,11 @@
 
             }
         );
-
         $(".salonEkle").click(
             function () {
                 var formData = {
                     Id: $(".formSalonSinemaId").val(),
-                    Isim: $(".formSalonIsim").val()
-                    
+                    Isim: $(".formSalonIsim").val() 
                 };
                 $.ajax(
                     {
@@ -94,7 +123,45 @@
                 )
             }
         );
+        $(".modalSinemaGuncelle").click(
+            function () {
+                var id = $(this).attr("data-sinemaGuncelleId");
+                var isim = $(this).attr("data-sinemaIsim");
+                var adres = $(this).attr("data-sinemaAdres");
 
+                $(".formGuncelleSinemaId").val(id);
+                $(".formGuncelleSinemaIsim").val(isim);
+                $(".formGuncelleSinemaAdres").val(adres);
+            }
+        );
+
+        $(".sinemaGuncelle").click(
+            function () {
+
+
+                var formData = {
+                    Id: $(".formGuncelleSinemaId").val(),
+                    Isim: $(".formGuncelleSinemaIsim").val(),
+                    Adres: $(".formGuncelleSinemaAdres").val()
+                };
+
+                $.ajax(
+                    {
+                        type: "POST",
+                        url: "/Sinema/Guncelle/",
+                        data: formData,
+                        success: function (durum) {
+                            if (durum == "basarili") {
+                                window.location.replace("/Sinema/Index");
+                            }
+                            else {
+                                $(".modal-body>p.mesaj").html("Hata olustu");
+                            }
+                        }
+                    }
+                )
+            }
+        );
 
     </script>
 }

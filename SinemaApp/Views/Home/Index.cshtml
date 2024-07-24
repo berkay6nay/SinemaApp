@@ -10,7 +10,15 @@
         {
             <div class="col-md-4 mb-4">
                 <div class="card shadow-sm border-light" style="border-radius: 12px;">
-                    <img class="card-img-top" src="..." alt="Film Fotolari Guncellenecek" style="border-top-left-radius: 12px; border-top-right-radius: 12px;">
+                    @if(film.FotoUrl != null)
+                    {
+                        <img class="card-img-top" src="@film.FotoUrl" alt="" style="border-top-left-radius: 12px; border-top-right-radius: 12px;">
+
+                    }
+                    else
+                    {
+                        <p>simdilik foto yok</p>
+                    }
                     <div class="card-body">
                         <h5 class="card-title">@film.Isim</h5>
                         <p class="card-text">@film.Aciklama</p>
