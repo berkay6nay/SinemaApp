@@ -74,9 +74,18 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <!-- Additional nav items can be added here -->
-                    </ul>
+                    @if (!User.Identity.IsAuthenticated)
+                    {
+                        <ul class="navbar-nav flex-grow-1">
+                            <li><a asp-controller="Home" asp-action="Giris">Giris Yap</a></li>
+                        </ul>
+                    }
+                    else
+                    {
+                        <ul class="navbar-nav flex-grow-1">
+                            <li><a asp-controller="Home" asp-action="Cikis">Çıkış Yap</a></li>
+                        </ul>
+                    }
                     <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Admin Panel
@@ -93,6 +102,14 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
+
+            @if (User.Identity.IsAuthenticated)
+            {
+                <a>@User.Identity.Name</a>
+            }
+            
+                   
+
             @RenderBody()
         </main>
     </div>

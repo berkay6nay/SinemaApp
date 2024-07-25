@@ -1,7 +1,10 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SinemaApp.Models;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace SinemaApp.Controllers
 {
@@ -14,6 +17,44 @@ namespace SinemaApp.Controllers
         {
             _logger = logger;
         }
+
+        [HttpGet]
+        public IActionResult Giris()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Giris(Kullanici k)
+        {
+            Kullanici u = db.Kullanicis.FirstOrDefault(x => x.Isim == k.Isim && x.Sifre == k.Sifre);
+            if(u != null)
+            {
+                var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name,u.Isim),
+                new Claim(ClaimTypes.Role, u.Rol ?? "K")
+            };
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity)).Wait();
+
+                return RedirectToAction("Index"); // Or wherever you want to redirect after login
+            }
+            else
+            {
+                return RedirectToAction("Error");
+            }
+        }
+
+        public IActionResult Cikis()
+        {
+            // Sign out the user
+            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).Wait();
+
+            // Redirect to the home page or login page after logout
+            return RedirectToAction("Index", "Home"); // Change this to the page you want to redirect to after logout
+        }
+
 
         public IActionResult Index()
         {

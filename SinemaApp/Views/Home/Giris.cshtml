@@ -1,0 +1,19 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<h1>Giris Yapma Ekrani</h1>
+
+<form method="post" action="@Url.Action("Giris", "Home")">
+    <div class="form-group">
+        <label >Kullanıcı adı</label>
+        <input type="text" class="form-control" id="exampleInputEmail1" name="Isim" placeholder="Kullanıcı adınızı girin">
+    </div>
+    <div class="form-group">
+        <label >Password</label>
+        <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Sifrenizi giriniz" name="Sifre">
+    </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Giriş Yap</button>
+</form>
