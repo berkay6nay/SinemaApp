@@ -1,0 +1,164 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@{
+    var gosterimler = ViewBag.Gosterims as List<SinemaApp.Models.Gosterim>;
+    var filmler = ViewBag.Filmler as List<SinemaApp.Models.Film>;
+    var sinemalar = ViewBag.Sinemalar as List<SinemaApp.Models.Sinema>;
+}
+<h1>Gosterimler</h1>
+<a class="btn modalGosterimEkle" data-bs-toggle="modal" data-bs-target="#myModalEkle"> Gosterim Ekle </a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Film Adi</th>
+            <th>Salon Adi</th>
+            <th>Sinema Adi</th>
+            <th>Başlangıç</th>
+            <th>Bitiş</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (gosterimler != null && gosterimler.Any())
+        {
+            @foreach (var gosterim in gosterimler)
+            {
+                <tr>
+                    <td>@gosterim.Film?.Isim</td>
+                    <td>@gosterim.Salon?.Isim</td>
+                    <td>@gosterim.Salon?.Sinema?.Isim</td>
+                    <td>@gosterim.Baslangic</td>
+                    <td>@gosterim.Bitis</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="6">Aktif gösterim bulunamadı</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="modal" tabindex="-1" id="myModalEkle">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Gosterim Ekle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mesaj"></p>
+                <form id="createGosterimForm" method="post" asp-action="">
+                    <div class="form-group">
+                        <label for="film">Film</label>
+                        <select  id="film" name="FilmId" class="form-control">
+                            <option value="">Select Film</option>
+                            @foreach (var film in filmler)
+                            {
+                                <option  value="@film.Id">@film.Isim</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <label for="sinema">Sinema</label>
+                        <select id="sinema" name="SinemaId" class="form-control">
+                            <option value="">Select Sinema</option>
+                            @foreach (var sinema in sinemalar)
+                            {
+                                <option  value="@sinema.Id">@sinema.Isim</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <label for="salon">Salon</label>
+                        <select id="salon" name="SalonId" class="form-control">
+                            <option  value="">Select Salon</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <label for="baslangic">Başlangıç</label>
+                        <input  type="datetime-local" id="baslangic" name="Baslangic" class="form-control" />
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <label for="bitis">Bitiş</label>
+                        <input  type="datetime-local" id="bitis" name="Bitis" class="form-control" />
+                    </div>
+                </form>
+               
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary gosterimEkle">Ekle</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#sinema').change(function () {
+                var sinemaId = $(this).val();
+                if (sinemaId) {
+                    $.ajax({
+                        url: 'Salon/SalonGetir',
+                        type: 'GET',
+                        data: { sinemaId: sinemaId },
+                        success: function (data) {
+                            console.log(data);
+                            $('#salon').empty();
+                            $('#salon').append('<option value="">Select Salon</option>');
+                            $.each(data, function (index, salon) {
+                                console.log('Salon ID:', salon.id); // Debugging log
+                                console.log('Salon Isim:', salon.isim);
+                                $('#salon').append('<option  value="' + salon.id + '">' + salon.isim + '</option>');
+                            });
+                        }
+                    });
+                } else {
+                    $('#salon').empty();
+                    $('#salon').append('<option value="">Select Salon</option>');
+                }
+            });
+        });
+        
+        $(".gosterimEkle").click(
+            function () {
+                var filmId = $('#film').val();
+                var salonId = $('#salon').val();
+                var baslangic = $('#baslangic').val();
+                var bitis = $('#bitis').val();
+                
+                var formData = {
+                    FilmId: filmId,
+                    SalonId: salonId,
+                    Baslangic: baslangic,
+                    Bitis: bitis
+                }    
+                $.ajax(
+                    {
+                        type: "POST",
+                        url: "/Gosterim/Ekle/",
+                        data: formData,
+                        success: function (durum) {
+                            if (durum == "basarili") {
+                                window.location.replace("/Gosterim/Index");
+                            }
+                            else {
+                                $(".modal-body>p.mesaj").html("Secilen zaman araligi icin salon dolu");
+                            }
+                        }
+                    }
+                )
+            }
+        );
+    </script>
+}

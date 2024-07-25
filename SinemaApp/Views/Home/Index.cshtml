@@ -9,16 +9,17 @@
         @foreach (Film film in Model)
         {
             <div class="col-md-4 mb-4">
-                <div class="card shadow-sm border-light" style="border-radius: 12px;">
-                    @if(film.FotoUrl != null)
-                    {
-                        <img class="card-img-top" src="@film.FotoUrl" alt="" style="border-top-left-radius: 12px; border-top-right-radius: 12px;">
-
-                    }
-                    else
-                    {
-                        <p>simdilik foto yok</p>
-                    }
+                <div class="card shadow-sm border-light fixed-card" style="border-radius: 12px;">
+                    <div class="card-img-container">
+                        @if (film.FotoUrl != null)
+                        {
+                            <img class="card-img" src="@film.FotoUrl" alt="" />
+                        }
+                        else
+                        {
+                            <p class="no-photo">Şimdilik foto yok</p>
+                        }
+                    </div>
                     <div class="card-body">
                         <h5 class="card-title">@film.Isim</h5>
                         <p class="card-text">@film.Aciklama</p>
@@ -28,7 +29,12 @@
                     </div>
                 </div>
             </div>
+
         }
     </div>
 </div>
 
+<style>
+    
+  
+</style>
