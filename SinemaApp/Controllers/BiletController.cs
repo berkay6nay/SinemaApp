@@ -70,6 +70,32 @@ namespace SinemaApp.Controllers
 
         }
 
+        public IActionResult Detay(int id)
+        {
+            Rezervasyon rezervasyon = db.Rezervasyons.FirstOrDefault(x =>x.Id == id);
+            List<GösterimKoltuk> koltuks = db.GösterimKoltuks.Where(x=> x.RezervasyonId == id).ToList();
+            Gosterim gosterim = db.Gosterims.FirstOrDefault(x => rezervasyon.GosterimId == x.Id);
+            Salon salon = db.Salons.FirstOrDefault(x => x.Id == gosterim.SalonId);
+            Film film = db.Films.FirstOrDefault(x => x.Id == gosterim.FilmId);
+            Sinema sinema = db.Sinemas.FirstOrDefault(x => x.Id == salon.SinemaId);
+            List<SinemaSalonuKoltuk> salonKoltuks = new List<SinemaSalonuKoltuk>();
+
+            foreach(GösterimKoltuk koltuk in koltuks)
+            {
+                SinemaSalonuKoltuk salonKoltuk = db.SinemaSalonuKoltuks.FirstOrDefault(x => x.Id == koltuk.SinemaSalonuKoltukId);
+                salonKoltuks.Add(salonKoltuk);
+            }
+
+            ViewBag.rezervasyon = rezervasyon; ViewBag.film = film;
+            ViewBag.koltuklar = salonKoltuks;
+            ViewBag.gosterim = gosterim;
+            ViewBag.salon = salon;
+            ViewBag.film = film;
+            ViewBag.sinema = sinema;
+
+            return View();
+        }
+
     }
 
     public class ReservationRequest

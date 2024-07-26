@@ -1,0 +1,39 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    var rezervasyon = ViewBag.rezervasyon as SinemaApp.Models.Rezervasyon;
+    var koltuklar = ViewBag.koltuklar as List<SinemaApp.Models.SinemaSalonuKoltuk>;
+    var gosterim = ViewBag.gosterim as SinemaApp.Models.Gosterim;
+    var salon = ViewBag.salon as SinemaApp.Models.Salon;
+    var film = ViewBag.film as SinemaApp.Models.Film;
+    var sinema = ViewBag.sinema as SinemaApp.Models.Sinema;
+}
+
+<h2>Rezervasyon Detayları</h2>
+
+<table class="table table-striped table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th>Film Adı</th>
+            <th>Sinema</th>
+            <th>Salon</th>
+            <th>Adres</th> 
+            <th>Koltuklar</th>
+        </tr>
+    </thead>
+    <tbody>
+            <tr>
+                <td>@film.Isim</td>
+                <td>@sinema.Isim</td>
+                <td>@salon.Isim</td>
+                <td>@sinema.Adres</td>
+            <td>@foreach (var koltuk in koltuklar)
+                {
+                    <p>@koltuk.Sira @koltuk.SiraNo</p>
+                }
+            </td>
+        </tr>
+        
+    </tbody>
+</table>

@@ -12,9 +12,38 @@
     var salonKoltuklar = ViewBag.salonKoltuklar as List<SinemaApp.Models.SinemaSalonuKoltuk>;
     
 }
+
+<div class="card mb-3" style="max-width: 540px;">
+    <div class="row g-0">
+        <div class="col-md-4">
+            <img src="@film.FotoUrl" class="img-fluid" alt="...">
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h5 class="card-title">@film.Isim</h5>
+                <p class="card-text">@film.Aciklama</p>
+                <p class="card-text">Sinema : @sinema.Isim</p>
+                <p class="card-text">Adres : @sinema.Adres</p>
+                <p class="card-text">Salon : @salon.Isim</p>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<br>
+<br>
+<br>
+
+
 <div class="d-flex justify-content-center">
     <div class="screen" data-gosterimId ="@gosterim.Id" >Ekran</div>
 </div>
+
+<br>
+<br>
+<br>
+
 
 <div class="container">
     <div id="seat-map" class="text-center">
@@ -170,7 +199,7 @@
                     data: JSON.stringify(requestData),
                     success: function (response) {
                         if (response.success) {
-                            window.location.replace(`/Rezervasyon/Detay/${response.rezervasyonId}`);
+                            window.location.replace(`/Bilet/Detay/${response.rezervasyonId}`);
                         }
                         else {
                             $(".modal-body>p.mesaj").html("İşlem sırasında bir hata oluştu");
