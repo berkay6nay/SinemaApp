@@ -25,6 +25,8 @@ public partial class Sinema2Context : DbContext
 
     public virtual DbSet<Kullanici> Kullanicis { get; set; }
 
+    public virtual DbSet<Rapor1> Rapor1s { get; set; }
+
     public virtual DbSet<Rezervasyon> Rezervasyons { get; set; }
 
     public virtual DbSet<Salon> Salons { get; set; }
@@ -121,11 +123,16 @@ public partial class Sinema2Context : DbContext
             entity.Property(e => e.Durum).HasColumnName("durum");
             entity.Property(e => e.Fiyat).HasColumnName("fiyat");
             entity.Property(e => e.GosterimId).HasColumnName("gosterim_id");
+            entity.Property(e => e.RezervasyonId).HasColumnName("rezervasyon_id");
             entity.Property(e => e.SinemaSalonuKoltukId).HasColumnName("sinemaSalonuKoltuk_id");
 
             entity.HasOne(d => d.Gosterim).WithMany(p => p.GösterimKoltuks)
                 .HasForeignKey(d => d.GosterimId)
                 .HasConstraintName("FK__GösterimK__goste__5FB337D6");
+
+            entity.HasOne(d => d.Rezervasyon).WithMany(p => p.GösterimKoltuks)
+                .HasForeignKey(d => d.RezervasyonId)
+                .HasConstraintName("FK_GosterimKoltuk_Rezervasyon");
 
             entity.HasOne(d => d.SinemaSalonuKoltuk).WithMany(p => p.GösterimKoltuks)
                 .HasForeignKey(d => d.SinemaSalonuKoltukId)
@@ -155,6 +162,31 @@ public partial class Sinema2Context : DbContext
             entity.Property(e => e.TelNo)
                 .HasMaxLength(50)
                 .HasColumnName("telNo");
+        });
+
+        modelBuilder.Entity<Rapor1>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("Rapor1");
+
+            entity.Property(e => e.Baslangic)
+                .HasColumnType("datetime")
+                .HasColumnName("baslangic");
+            entity.Property(e => e.Bitis)
+                .HasColumnType("datetime")
+                .HasColumnName("bitis");
+            entity.Property(e => e.FilmId).HasColumnName("film_id");
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Isim)
+                .HasMaxLength(255)
+                .HasColumnName("isim");
+            entity.Property(e => e.SalonId).HasColumnName("salon_id");
+            entity.Property(e => e.Sira)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("sira");
         });
 
         modelBuilder.Entity<Rezervasyon>(entity =>

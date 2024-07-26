@@ -13,11 +13,10 @@
     
 }
 <div class="d-flex justify-content-center">
-    <div class="screen">Ekran</div>
+    <div class="screen" data-gosterimId ="@gosterim.Id" >Ekran</div>
 </div>
 
 <div class="container">
-    
     <div id="seat-map" class="text-center">
         @foreach (var row in "ABCDE")
         {
@@ -53,11 +52,12 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <p class="mesaj"></p>
                 <p>Seçili koltukları rezerve etmek istediğinize emin misiniz?</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
-                <button type="button" class="btn btn-primary rezervasyonYap">Rezervasyon yap</button>
+                <button type="button" class="btn btn-primary rezervasyonYap" data-kullaniciAdi="@User.Identity.Name" data-gosterimId="@gosterim.Id">Rezervasyon yap</button>
             </div>
         </div>
     </div>
@@ -128,7 +128,6 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             const seats = document.querySelectorAll('.seat.available');
-
             seats.forEach(seat => {
                 seat.addEventListener('click', () => {
                     const seatId = seat.getAttribute('data-id'); // Get the ID of the clicked seat
@@ -151,5 +150,37 @@
                 });
             });
         });
+
+        $('.rezervasyonYap').click(function () {
+            console.log('Selected Seats:', selectedSeats);
+            // You can now use the selectedSeats array to send data to your server
+            var kullaniciAdi = $(this).attr("data-kullaniciAdi");
+            var gosterimId = $(this).attr("data-gosterimId");
+            console.log(kullaniciAdi);
+            const requestData = {
+                kullaniciAdi : kullaniciAdi,
+                koltuklar: selectedSeats,
+                gosterimId : gosterimId
+            }
+            $.ajax(
+                {
+                    type: "POST",
+                    url: "/Bilet/BiletAl/",
+                    contentType: "application/json",
+                    data: JSON.stringify(requestData),
+                    success: function (response) {
+                        if (response.success) {
+                            window.location.replace(`/Rezervasyon/Detay/${response.rezervasyonId}`);
+                        }
+                        else {
+                            $(".modal-body>p.mesaj").html("İşlem sırasında bir hata oluştu");
+                        }
+                    }
+                }
+            )
+        });
+
+
+
     </script>
 }

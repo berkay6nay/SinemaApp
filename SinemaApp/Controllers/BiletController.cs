@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using SinemaApp.Models;
 
 namespace SinemaApp.Controllers
@@ -35,10 +36,46 @@ namespace SinemaApp.Controllers
             return View();
         }
 
-        public void BiletAl()
+        public IActionResult BiletAl([FromBody] ReservationRequest requestData)
         {
+            try
+            {
+                Kullanici kullanici = db.Kullanicis.FirstOrDefault(x => x.Isim == requestData.kullaniciAdi);
+                Rezervasyon rezervasyon = new Rezervasyon();
+                rezervasyon.KullaniciId = kullanici.Id;
+                rezervasyon.GosterimId = requestData.gosterimId;
+
+                db.Rezervasyons.Add(rezervasyon);
+                db.SaveChanges();
+
+                foreach (int koltukId in requestData.koltuklar)
+                {
+
+                    GösterimKoltuk koltuk = db.GösterimKoltuks.FirstOrDefault(x => x.Id == koltukId);
+                    koltuk.RezervasyonId = rezervasyon.Id;
+                    koltuk.Durum = true;
+                    db.GösterimKoltuks.Update(koltuk);
+                    db.SaveChanges();
+
+                }
+
+                return Ok(new {success = true , rezervasyonId = rezervasyon.Id});
+
+            }
+            catch(Exception e)
+            {
+                return BadRequest(new {success = false});
+            }
+           
 
         }
 
+    }
+
+    public class ReservationRequest
+    {
+        public string kullaniciAdi { get; set; }
+        public List<int> koltuklar { get; set; }
+        public int gosterimId { get; set; }
     }
 }

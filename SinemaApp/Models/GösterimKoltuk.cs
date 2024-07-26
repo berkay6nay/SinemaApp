@@ -15,7 +15,11 @@ public partial class GösterimKoltuk
 
     public int? GosterimId { get; set; }
 
+    public int? RezervasyonId { get; set; }
+
     public virtual Gosterim? Gosterim { get; set; }
+
+    public virtual Rezervasyon? Rezervasyon { get; set; }
 
     public virtual SinemaSalonuKoltuk? SinemaSalonuKoltuk { get; set; }
 }

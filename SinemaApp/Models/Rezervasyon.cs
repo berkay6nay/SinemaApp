@@ -17,5 +17,7 @@ public partial class Rezervasyon
 
     public virtual Gosterim? Gosterim { get; set; }
 
+    public virtual ICollection<GösterimKoltuk> GösterimKoltuks { get; set; } = new List<GösterimKoltuk>();
+
     public virtual Kullanici? Kullanici { get; set; }
 }

@@ -33,6 +33,7 @@ namespace SinemaApp.Controllers
             {
                 new Claim(ClaimTypes.Name,u.Isim),
                 new Claim(ClaimTypes.Role, u.Rol ?? "K")
+                
             };
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
