@@ -1,0 +1,155 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@{
+    var gosterim = ViewBag.gosterim as SinemaApp.Models.Gosterim;
+    var koltuklar = ViewBag.koltuklar as List<SinemaApp.Models.GösterimKoltuk>;
+    var film = ViewBag.film as SinemaApp.Models.Film;
+    var salon = ViewBag.salon as SinemaApp.Models.Salon;
+    var sinema = ViewBag.sinema as SinemaApp.Models.Sinema;
+    var salonKoltuklar = ViewBag.salonKoltuklar as List<SinemaApp.Models.SinemaSalonuKoltuk>;
+    
+}
+<div class="d-flex justify-content-center">
+    <div class="screen">Ekran</div>
+</div>
+
+<div class="container">
+    
+    <div id="seat-map" class="text-center">
+        @foreach (var row in "ABCDE")
+        {
+            <div class="row-seats">
+                @foreach (var koltuk in koltuklar)
+                {
+                    SinemaSalonuKoltuk salonuKoltuk = salonKoltuklar.FirstOrDefault(x => x.Id == koltuk.SinemaSalonuKoltukId);
+                    if (salonuKoltuk != null && salonuKoltuk.Sira == row.ToString())
+                    {
+                        <div class="seat @(koltuk.Durum == false ? "available" : koltuk.Durum == true ? "booked" : "selected")"
+                             data-row="@salonuKoltuk.Sira"
+                             data-seat-number="@salonuKoltuk.SiraNo"
+                             data-id="@koltuk.Id">
+                            <p>@salonuKoltuk.Sira @salonuKoltuk.SiraNo</p>
+                        </div>
+                    }
+                }
+            </div>
+        }
+    </div>
+
+    <div class="text-center mt-4">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#rezervasyonModal">Rezervasyon Yap</button>
+    </div>
+
+</div>
+
+<div class="modal fade" id="rezervasyonModal" tabindex="-1"aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Rezervasyon</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Seçili koltukları rezerve etmek istediğinize emin misiniz?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                <button type="button" class="btn btn-primary rezervasyonYap">Rezervasyon yap</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    #seat-map {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .row-seats {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 10px; 
+    }
+
+    .seat {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 5px;
+        font-size: 14px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        .seat.available {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .seat.booked {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .seat.selected {
+            background-color: #ffc107;
+            color: black;
+        }
+
+        .seat p {
+            margin: 0;
+            font-size: 12px;
+        }
+
+    .screen {
+        width: 100%;
+        height: 50px;
+        background-color: #333;
+        color: white;
+        text-align: center;
+        line-height: 50px;
+        margin-bottom: 20px;
+    }
+</style>
+
+
+@section Scripts{
+    <script>
+
+
+        let selectedSeats = [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const seats = document.querySelectorAll('.seat.available');
+
+            seats.forEach(seat => {
+                seat.addEventListener('click', () => {
+                    const seatId = seat.getAttribute('data-id'); // Get the ID of the clicked seat
+                    const seatRow = seat.getAttribute('data-row');
+                    const seatNumber = seat.getAttribute('data-seat-number');
+
+                    // Toggle seat selection
+                    if (seat.classList.contains('selected')) {
+                        seat.classList.remove('selected');
+                        // Remove from the selectedSeats array
+                        selectedSeats = selectedSeats.filter(id => id !== seatId);
+                    } else {
+                        seat.classList.add('selected');
+                        // Add to the selectedSeats array
+                        selectedSeats.push(seatId);
+                    }
+
+                    // Optionally log the selected seats to the console
+                    console.log('Selected Seats:', selectedSeats);
+                });
+            });
+        });
+    </script>
+}

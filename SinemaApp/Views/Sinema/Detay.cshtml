@@ -32,12 +32,19 @@
                     <thead class="thead-dark">
                         <tr>
                             <th>Başlangıç</th>
-                            <th>Bitiş</th>
-                            <th>Film</th>
+                            <th>Bitiş</th> 
                             <th>Salon</th>
                             <th>Sinema</th>
-                            <th>Bilet Al</th>
-                           
+                            @if (User.IsInRole("A"))
+                            {
+                                
+                            }
+                            else
+                            {
+                                <th>Bilet Al</th>
+                            }
+                            
+
                         </tr>
                     </thead>
                     <tbody>
@@ -47,9 +54,25 @@
                                 <td>@gosterim.Baslangic?.ToString("dd MMM yyyy HH:mm")</td>
                                 <td>@gosterim.Bitis?.ToString("dd MMM yyyy HH:mm")</td>
                                 <td>@gosterim.Film?.Isim</td>
-                                <td>@gosterim.Salon?.Isim</td>
                                 <td>@gosterim.Salon?.Sinema?.Isim</td>
-                                <td><a asp-controller="Bilet" asp-action="BiletAlmaEkranı">Bilet Al</a></td>
+
+                                @if (User.IsInRole("A"))
+                                {
+                                    
+                                }
+                                else
+                                {
+                                    @if (User.IsInRole("K"))
+                                    {
+                                        <td><a asp-controller="Bilet" asp-action="BiletAlmaEkrani" asp-route-id ="@gosterim.Id">Bilet Al</a></td>
+                                    }
+                                    else
+                                    {
+                                        <td><a>Login modalına yöneltme</a></td>
+                                    }
+
+                        }
+
                             </tr>
                         }
                     </tbody>

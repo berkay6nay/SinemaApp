@@ -7,9 +7,17 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Home/Login";
-        options.LogoutPath = "/Home/Logout";
+        options.LoginPath = "/Home/Giris";
+        options.LogoutPath = "/Home/Cikis";
     });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("A"));
+    options.AddPolicy("UserOnly", policy => policy.RequireRole("K" , "A"));
+});
+
+
 builder.Services.AddAuthorization();
 
 var app = builder.Build();

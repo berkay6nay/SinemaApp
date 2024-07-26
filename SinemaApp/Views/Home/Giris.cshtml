@@ -3,17 +3,30 @@
 *@
 @{
 }
-<h1>Giris Yapma Ekrani</h1>
 
-<form method="post" action="@Url.Action("Giris", "Home")">
-    <div class="form-group">
-        <label >Kullanıcı adı</label>
-        <input type="text" class="form-control" id="exampleInputEmail1" name="Isim" placeholder="Kullanıcı adınızı girin">
+<form method="post" action="@Url.Action("Giris", "Home")" class="needs-validation" novalidate>
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white text-center">
+            <h4 class="mb-0">Kullanıcı Girişi</h4>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label for="isim" class="form-label">Kullanıcı Adı</label>
+                <input type="text" class="form-control" id="isim" name="Isim" placeholder="Kullanıcı adınızı girin" required>
+                <div class="invalid-feedback">
+                    Lütfen kullanıcı adınızı girin.
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="sifre" class="form-label">Şifre</label>
+                <input type="password" class="form-control" id="sifre" name="Sifre" placeholder="Şifrenizi giriniz" required>
+                <div class="invalid-feedback">
+                    Lütfen şifrenizi girin.
+                </div>
+            </div>
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary">Giriş Yap</button>
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        <label >Password</label>
-        <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Sifrenizi giriniz" name="Sifre">
-    </div>
-    </div>
-    <button type="submit" class="btn btn-primary">Giriş Yap</button>
 </form>

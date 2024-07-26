@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SinemaApp.Models;
 namespace SinemaApp.Controllers
 {
+    [Authorize(Roles = "A")]
     public class SalonController : Controller
     {
         Sinema2Context db = new Sinema2Context();

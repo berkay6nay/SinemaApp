@@ -87,14 +87,18 @@
                         </ul>
                     }
                     <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Admin Panel
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" asp-controller="Film" asp-action="Index">Filmler</a>
-                            <a class="dropdown-item" asp-controller="Sinema" asp-action="Index">Sinemalar</a>
-                            <a class="dropdown-item" asp-controller="Gosterim" asp-action="Index">Gösterimler</a>
-                        </div>
+                        @if (User.IsInRole("A"))
+                        {
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Admin Panel
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" asp-controller="Film" asp-action="Index">Filmler</a>
+                                <a class="dropdown-item" asp-controller="Sinema" asp-action="Index">Sinemalar</a>
+                                <a class="dropdown-item" asp-controller="Gosterim" asp-action="Index">Gösterimler</a>
+                            </div>
+                        }
+                        
                     </div>
                 </div>
             </div>
@@ -102,14 +106,6 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
-
-            @if (User.Identity.IsAuthenticated)
-            {
-                <a>@User.Identity.Name</a>
-            }
-            
-                   
-
             @RenderBody()
         </main>
     </div>

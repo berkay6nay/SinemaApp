@@ -1,11 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SinemaApp.Models;
 namespace SinemaApp.Controllers
 {
+
+    [Authorize(Roles = "A")]
     public class SinemaController : Controller
     {
+        
         Sinema2Context db = new Sinema2Context();
+        
+        
         public IActionResult Index()
         {
             List<Sinema> sinemalar = db.Sinemas.ToList();
@@ -13,7 +19,8 @@ namespace SinemaApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Detay(int id)
+        [AllowAnonymous]
+        public IActionResult Detay(int id) //kullanıcılar için gösterim listeleme sayfası
         {
             Film film = db.Films.FirstOrDefault(x => x.Id == id);
 
