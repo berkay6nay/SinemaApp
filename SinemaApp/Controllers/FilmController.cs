@@ -4,19 +4,19 @@ using SinemaApp.Models;
 
 namespace SinemaApp.Controllers
 {
-    
+    [Authorize(Roles = "A")]
     public class FilmController : Controller
     {
         Sinema2Context db = new Sinema2Context();
 
-        [Authorize(Roles = "A" )]
+        
         public IActionResult Index()
         {
             List<Film> filmler = db.Films.ToList();
             return View(filmler);
         }
 
-        [Authorize(Roles = "A")]
+        
         public string Guncelle(int Id , String Isim , String Aciklama, int Sure , String Dil , String Tur , DateTime CikisTarihi , String FotoUrl) 
         {
             Film film = new Film();
@@ -41,7 +41,7 @@ namespace SinemaApp.Controllers
             
         }
 
-        [Authorize(Roles = "A")]
+        
         [HttpPost]
         public string Ekle(String Isim, String Aciklama, int Sure, String Dil, String Tur, DateTime CikisTarihi ,IFormFile photo)
         {

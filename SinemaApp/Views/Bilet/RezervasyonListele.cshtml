@@ -1,0 +1,41 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    var rezervasyonlar = ViewBag.rezervasyonlar;
+}
+
+<table class="table table-striped table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th>Film Adı</th>
+            <th>Sinema</th>
+            <th>Salon</th>
+            <th>Adres</th>
+            <th>Koltuklar</th>
+            <th>Başlangıç</th>
+            <th>Bitiş</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var rezervasyon in rezervasyonlar)
+        {
+            <tr>
+                <td>@rezervasyon.Gosterim.Film.Isim</td>
+                <td>@rezervasyon.Gosterim.Salon.Sinema.Isim</td>
+                <td>@rezervasyon.Gosterim.Salon.Isim</td>
+                <td>@rezervasyon.Gosterim.Salon.Sinema.Adres</td>
+                <td>
+                    @foreach (var koltuk in rezervasyon.Gosterim.GösterimKoltuks)
+                    {
+                        <p>@koltuk.SinemaSalonuKoltuk.Sira @koltuk.SinemaSalonuKoltuk.SiraNo</p>
+                    }
+                </td>
+                <td>@rezervasyon.Gosterim.Baslangic</td>
+                <td>@rezervasyon.Gosterim.Bitis</td>
+            </tr>
+        }
+        
+
+    </tbody>
+</table>

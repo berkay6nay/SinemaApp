@@ -19,8 +19,13 @@ namespace SinemaApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Giris()
+        public IActionResult Giris(string? hata)
         {
+            if (!string.IsNullOrEmpty(hata) && hata == "yanlis")
+            {
+                ViewBag.HataMesaj = "Yanlýþ kullanýcý adý ya da þifre girdiniz.";
+            }
+
             return View();
         }
         [HttpPost]
@@ -43,7 +48,7 @@ namespace SinemaApp.Controllers
             }
             else
             {
-                return RedirectToAction("Error");
+                return RedirectToAction("Giris" , new { hata = "yanlis" });
             }
         }
 
@@ -64,6 +69,50 @@ namespace SinemaApp.Controllers
             .Where(film => film.Gosterims.Any())
             .ToList();
             return View(filmler);
+        }
+
+        [HttpGet]
+        public IActionResult KayitYap(string? hata)
+        {
+            if (!string.IsNullOrEmpty(hata) && hata == "kullaniciMevcut")
+            {
+                ViewBag.HataMesaj = "Bu isimde baþka bir kullanýcý mevcut. Lütfen baþka bir isim seçiniz";
+            }
+            return View();
+
+        }
+        [HttpPost]
+        public IActionResult KayitYap(string Isim , string Sifre)
+        {
+            Kullanici kullanici = new Kullanici();
+            kullanici.Isim = Isim;
+            kullanici.Sifre = Sifre;
+            kullanici.Rol = "K";
+            try
+            {
+                db.Kullanicis.Add(kullanici);
+                db.SaveChanges();
+                return RedirectToAction("Giris" ,"Home");
+            }
+            catch
+            {
+                string hata = "kullaniciMevcut";
+                return RedirectToAction("KayitYap", new { hata = "kullaniciMevcut" });
+            }            
+        }
+
+        [HttpGet]
+        public IActionResult FilmAra(string isim)
+        {
+            if (string.IsNullOrEmpty(isim))
+            {
+                return View(new List<Film>());
+            }
+
+            List<Film> films = db.Films
+                      .Where(f => f.Isim.Contains(isim))
+                      .ToList();
+            return View(films);
         }
 
         public IActionResult Privacy()

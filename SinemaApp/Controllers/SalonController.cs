@@ -57,10 +57,10 @@ namespace SinemaApp.Controllers
         {
 
             var salons = db.Salons
-        .Where(s => s.SinemaId == sinemaId)
-        .Select(s => new { Id = s.Id, Isim = s.Isim })
-        .ToList();
-
+            .Where(s => s.SinemaId == sinemaId)
+            .Select(s => new { Id = s.Id, Isim = s.Isim })
+             .ToList();
+    
             foreach (var salon in salons)
             {
                 Console.WriteLine($"Id: {salon.Id}, Isim: {salon.Isim}");

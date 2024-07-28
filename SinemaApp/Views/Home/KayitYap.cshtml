@@ -3,6 +3,7 @@
 *@
 @{
 }
+
 @{
     string hataMesaj = ViewBag.HataMesaj as string;
 }
@@ -10,28 +11,29 @@
 {
     <p class="mesaj">@hataMesaj</p>
 }
-<form method="post" action="@Url.Action("Giris", "Home")" class="needs-validation" novalidate>
+
+<form method="post" action="@Url.Action("KayitYap", "Home")" class="needs-validation" novalidate>
     <div class="card shadow-sm">
         <div class="card-header bg-primary text-white text-center">
-            <h4 class="mb-0">Kullanıcı Girişi</h4>
+            <h4 class="mb-0">Kullanıcı Kayit </h4>
         </div>
         <div class="card-body">
             <div class="mb-3">
                 <label for="isim" class="form-label">Kullanıcı Adı</label>
-                <input type="text" class="form-control" id="isim" name="Isim" placeholder="Kullanıcı adınızı girin" required>
+                <input type="text" class="form-control formIsim" id="isim" name="Isim" placeholder="Kullanıcı adınızı girin" required>
                 <div class="invalid-feedback">
                     Lütfen kullanıcı adınızı girin.
                 </div>
             </div>
             <div class="mb-3">
                 <label for="sifre" class="form-label">Şifre</label>
-                <input type="password" class="form-control" id="sifre" name="Sifre" placeholder="Şifrenizi giriniz" required>
+                <input type="password" class="form-control formSifre" id="sifre" name="Sifre" placeholder="Şifrenizi giriniz" required>
                 <div class="invalid-feedback">
                     Lütfen şifrenizi girin.
                 </div>
             </div>
-            <div class="d-grid">
-                <button type="submit" class="btn btn-primary">Giriş Yap</button>
+            <div class="d-grid">    
+                <button type="submit" class="btn btn-primary kayitYap">Kayit Yap</button>
             </div>
         </div>
     </div>

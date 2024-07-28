@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SinemaApp.Models;
 
 namespace SinemaApp.Controllers
 {
+    [Authorize(Roles = "K")]
     public class BiletController : Controller
     {
         Sinema2Context db = new Sinema2Context();
@@ -93,6 +96,33 @@ namespace SinemaApp.Controllers
             ViewBag.film = film;
             ViewBag.sinema = sinema;
 
+            return View();
+        }
+
+        public IActionResult RezervasyonListele(string isim)
+        {
+            Kullanici kullanici = db.Kullanicis.FirstOrDefault(x=> x.Isim == isim);
+
+            var rezervasyonlar = db.Rezervasyons
+            .Where(r => r.KullaniciId == kullanici.Id)
+            .Select(r => new
+            {
+                Rezervasyon = r,
+                Kullanici = r.Kullanici,
+                Gosterim = r.Gosterim,
+                Film = r.Gosterim.Film,
+                Salon = r.Gosterim.Salon,
+                Sinema = r.Gosterim.Salon.Sinema,
+                GosterimKoltuks = r.GösterimKoltuks.Select(gk => new
+                {
+                    GosterimKoltuk = gk,
+                    SinemaSalonuKoltuk = gk.SinemaSalonuKoltuk
+                }),
+                SinemaSalonuKoltuks = r.GösterimKoltuks.Select(gk => gk.SinemaSalonuKoltuk).ToList()
+            }).ToList();
+
+
+            ViewBag.rezervasyonlar = rezervasyonlar;
             return View();
         }
 

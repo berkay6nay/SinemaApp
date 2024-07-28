@@ -66,29 +66,39 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark">
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SinemaNet</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    @if (!User.Identity.IsAuthenticated)
-                    {
-                        <ul class="navbar-nav flex-grow-1">
-                            <li><a asp-controller="Home" asp-action="Giris">Giris Yap</a></li>
-                        </ul>
-                    }
-                    else
-                    {
-                        <ul class="navbar-nav flex-grow-1">
-                            <li><a asp-controller="Home" asp-action="Cikis">Çıkış Yap</a></li>
-                        </ul>
-                    }
-                    <div class="dropdown">
-                        @if (User.IsInRole("A"))
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto mb-2 mb-sm-0">
+                        @if (!User.Identity.IsAuthenticated)
                         {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Home" asp-action="Giris">Giriş Yap</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Home" asp-action="KayitYap">Üye Ol</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Home" asp-action="Cikis">Çıkış Yap</a>
+                            </li>
+                            @if (User.IsInRole("K"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Bilet" asp-action="RezervasyonListele" asp-route-isim="@User.Identity.Name">Rezervasyonlarım</a>
+                                </li>
+                            }
+                        }
+                    </ul>
+                    @if (User.IsInRole("A"))
+                    {
+                        <div class="dropdown">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Admin Panel
                             </button>
@@ -97,9 +107,12 @@
                                 <a class="dropdown-item" asp-controller="Sinema" asp-action="Index">Sinemalar</a>
                                 <a class="dropdown-item" asp-controller="Gosterim" asp-action="Index">Gösterimler</a>
                             </div>
-                        }
-                        
-                    </div>
+                        </div>
+                    }
+                    <form class="d-flex" method="get" action="/Home/FilmAra">
+                        <input class="form-control me-2" type="search" name="isim" placeholder="Film ara..." aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Ara</button>
+                    </form>
                 </div>
             </div>
         </nav>
