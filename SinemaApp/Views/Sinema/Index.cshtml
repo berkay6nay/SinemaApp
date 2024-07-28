@@ -11,9 +11,9 @@
         <tr>
             <th >İsim</th>
             <th >Adres</th>
-            <th >Guncelle</th>
+            <th >Güncelle</th>
             <th >Salon Ekle</th>
-            <th >Salonlari Görüntüle</th>
+            <th >Salonları Görüntüle</th>
         </tr>
     </thead>
     <tbody>
@@ -21,9 +21,9 @@
             <tr>
                 <td>@sinema.Isim</td>
                 <td>@sinema.Adres</td>
-                <td><a class="btn modalSinemaGuncelle" data-bs-toggle="modal" data-bs-target="#myModalSinemaGuncelle" data-sinemaGuncelleId ="@sinema.Id" data-sinemaIsim = "@sinema.Isim" data-sinemaAdres ="@sinema.Adres"> Guncelle </a></td>
+                <td><a class="btn modalSinemaGuncelle" data-bs-toggle="modal" data-bs-target="#myModalSinemaGuncelle" data-sinemaGuncelleId ="@sinema.Id" data-sinemaIsim = "@sinema.Isim" data-sinemaAdres ="@sinema.Adres"> Güncelle </a></td>
                 <td><a class="btn modalSalonEkle" data-bs-toggle="modal" data-bs-target="#myModalSalonEkle" data-sinemaId ="@sinema.Id"> Salon Ekle </a></td>
-                <td><a asp-controller="Salon" asp-action="Listele" asp-route-id="@sinema.Id" > Salonlari Görüntüle </a> </td>
+                <td><a asp-controller="Salon" asp-action="Listele" asp-route-id="@sinema.Id" > Salonları Görüntüle </a> </td>
             </tr> 
         }
         
@@ -41,7 +41,6 @@
                 <p class="mesaj"></p>
                 <form id="SalonEkleForm">
                     <div>
-                        <label></label>
                         <input class="form-control formSalonSinemaId" type="hidden" name="Id" />
                     </div>
                     <div>
@@ -62,7 +61,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Film Ekle</h5>
+                <h5 class="modal-title">Sinema Güncelleme</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -82,7 +81,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary sinemaGuncelle">Guncelle</button>
+                <button type="button" class="btn btn-primary sinemaGuncelle">Güncelle</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
             </div>
         </div>
@@ -116,7 +115,7 @@
                                 window.location.replace("/Sinema/Index");
                             }
                             else {
-                                $(".modal-body>p.mesaj").html("Hata olustu");
+                                $(".modal-body>p.mesaj").html("Hata oluştu");
                             }
                         }
                     }
@@ -155,7 +154,7 @@
                                 window.location.replace("/Sinema/Index");
                             }
                             else {
-                                $(".modal-body>p.mesaj").html("Hata olustu");
+                                $(".modal-body>p.mesaj").html("Hata oluştu");
                             }
                         }
                     }

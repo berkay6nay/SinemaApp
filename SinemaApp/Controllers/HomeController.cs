@@ -110,6 +110,8 @@ namespace SinemaApp.Controllers
             }
 
             List<Film> films = db.Films
+                .Include(f  => f.Gosterims)
+                .Where(f=> f.Gosterims.Any())
                       .Where(f => f.Isim.Contains(isim))
                       .ToList();
             return View(films);
