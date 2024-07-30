@@ -5,7 +5,6 @@ using SinemaApp.Models;
 
 namespace SinemaApp.Controllers
 {
-
     [Authorize(Roles ="A")]
     public class GosterimController : Controller
     {
@@ -26,18 +25,19 @@ namespace SinemaApp.Controllers
 
             return View();
         }
-
         public string Ekle(Gosterim gosterim)
         {
             if (IsTimeSlotAvailable(gosterim))
             {
-                // Add the new gosterim to the database
                 db.Gosterims.Add(gosterim);
                 db.SaveChanges();
 
                 Salon salon = db.Salons.FirstOrDefault(x => x.Id == gosterim.SalonId);
                 List<SinemaSalonuKoltuk> koltuklar = db.SinemaSalonuKoltuks.Where(x => x.SalonId == salon.Id).ToList();
-
+                if (!koltuklar.Any())
+                {
+                    return "hata";
+                }
                 foreach(SinemaSalonuKoltuk koltuk in koltuklar)
                 {
                     GösterimKoltuk gösterimKoltuk = new GösterimKoltuk();
@@ -48,20 +48,62 @@ namespace SinemaApp.Controllers
                     db.GösterimKoltuks.Add(gösterimKoltuk);
                     db.SaveChanges();
                 }
-
-                return "basarili"; // Or any other appropriate action
+                return "basarili"; 
             }
             else
             {
                 return "Secilen zaman araligi icin salon dolu";
             }
         }
+        public string Guncelle(Gosterim gosterim)
+        {
+            if (IsTimeSlotAvailable(gosterim))
+            {
+                try
+                {
+                    db.Gosterims.Update(gosterim);
+                    db.SaveChanges();
+                    return "basarili";
+                }
+                catch
+                {
+                    return "hata";
+                }
+            }
+            else return "hata";
+        }
 
         public IActionResult EklenenGosterimDetay(int id)
         {
             return View();
         }
+        public string IptalEt(int id)
+        {
+            Gosterim gosterim = db.Gosterims.FirstOrDefault(g=>g.Id == id);
+            List<GösterimKoltuk> koltuklar = db.GösterimKoltuks.Where(x => x.GosterimId == gosterim.Id).ToList();
+            List<Rezervasyon> rezervasyonlar = db.Rezervasyons.Where(x => x.GosterimId == gosterim.Id).ToList();
+            try
+            {
+                foreach(Rezervasyon rezervasyon in rezervasyonlar)
+                {
+                    db.Rezervasyons.Remove(rezervasyon);
+                    db.SaveChanges();
+                }
+                foreach(GösterimKoltuk koltuk in koltuklar)
+                {
+                    db.GösterimKoltuks.Remove(koltuk);
+                    db.SaveChanges();
+                }
 
+                db.Gosterims.Remove(gosterim);
+                db.SaveChanges();
+                return "basarili";
+            }
+            catch
+            {
+                return "hata";
+            }
+        }
         private bool IsTimeSlotAvailable(Gosterim newGosterim)
         {
             return !db.Gosterims.Any(g =>

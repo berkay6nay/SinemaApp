@@ -9,7 +9,7 @@
 
     <p class="mesaj"></p>
 
-    <table class="table">
+    <table class="table table-hover">
         <thead>
             <tr>
                 <th>Salon İsmi</th>
@@ -24,7 +24,7 @@
                 <tr>
 
                     <td>@salon.Isim</td>
-                    <td><a asp-controller="Salon" asp-action="Detay" asp-route-id="@salon.Id" >Detaylara Git</a></td>
+                    <td><a class="btn btn-success" asp-controller="Salon" asp-action="Detay" asp-route-id="@salon.Id" >Detaylara Git</a></td>
                 </tr>
             }
 

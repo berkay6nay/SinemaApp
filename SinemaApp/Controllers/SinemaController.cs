@@ -58,6 +58,23 @@ namespace SinemaApp.Controllers
             }
         }
 
+        [HttpPost]
+        public string Ekle(string Isim , string Adres)
+        {
+            Sinema sinema = new Sinema();
+            sinema.Isim = Isim;
+            sinema.Adres = Adres;
+            try
+            {
+                db.Sinemas.Add(sinema);
+                db.SaveChanges();
+                return "basarili";
+            }
+            catch
+            {
+                return "hata";
+            }
+        }
        
     }
 }

@@ -26,9 +26,9 @@
                 <td>@rezervasyon.Gosterim.Salon.Isim</td>
                 <td>@rezervasyon.Gosterim.Salon.Sinema.Adres</td>
                 <td>
-                    @foreach (var koltuk in rezervasyon.Gosterim.GösterimKoltuks)
+                    @foreach (var koltuk in rezervasyon.SinemaSalonuKoltuks)
                     {
-                        <p>@koltuk.SinemaSalonuKoltuk.Sira @koltuk.SinemaSalonuKoltuk.SiraNo</p>
+                        <p>@koltuk.Sira@koltuk.SiraNo</p>
                     }
                 </td>
                 <td>@rezervasyon.Gosterim.Baslangic</td>

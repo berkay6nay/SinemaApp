@@ -113,11 +113,7 @@ namespace SinemaApp.Controllers
                 Film = r.Gosterim.Film,
                 Salon = r.Gosterim.Salon,
                 Sinema = r.Gosterim.Salon.Sinema,
-                GosterimKoltuks = r.GösterimKoltuks.Select(gk => new
-                {
-                    GosterimKoltuk = gk,
-                    SinemaSalonuKoltuk = gk.SinemaSalonuKoltuk
-                }),
+                
                 SinemaSalonuKoltuks = r.GösterimKoltuks.Select(gk => gk.SinemaSalonuKoltuk).ToList()
             }).ToList();
 
@@ -125,6 +121,7 @@ namespace SinemaApp.Controllers
             ViewBag.rezervasyonlar = rezervasyonlar;
             return View();
         }
+         
 
     }
 

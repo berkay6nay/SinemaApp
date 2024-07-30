@@ -10,35 +10,49 @@
     <a class="btn btn-success modalEkle" data-bs-toggle="modal" data-bs-target="#myModalEkle">Film Ekle</a>
 </div>
 
-@foreach(Film film in Model)
-{
-    <div class="card" style="width: 25rem;">
-        @if (film.FotoUrl != null)
+<div class="container">
+    <div class="row">
+        @foreach (Film film in Model)
         {
-            <img class="card-img-top img-fluid" src="@film.FotoUrl" alt="Film Fotoğrafı" />
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 d-flex flex-column">
+                    @if (film.FotoUrl != null)
+                    {
+                        <img class="card-img-top custom-img" src="@film.FotoUrl" alt="Film Fotoğrafı" />
+                    }
+                    else
+                    {
+                        <img class="card-img-top custom-img" src="..." alt="Card image cap">
+                    }
+                    <div class="card-body flex-grow-1">
+                        <h5 class="card-title">@film.Isim</h5>
+                        <p class="card-text">@film.Aciklama</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Süre : @film.Sure dakika.</li>
+                        <li class="list-group-item">Dil : @film.Dil</li>
+                        <li class="list-group-item">Tür : @film.Tur</li>
+                        <li class="list-group-item">Çıkış Tarihi : @film.CikisTarihi</li>
+                    </ul>
+                    <div class="card-body mt-auto">
+                        <a class="btn btn-success modalGuncelle" data-bs-toggle="modal"
+                           data-bs-target="#myModalGuncelle"
+                           data-filmId="@film.Id"
+                           data-filmIsim="@film.Isim"
+                           data-filmAciklama="@film.Aciklama"
+                           data-filmSure="@film.Sure"
+                           data-filmDil="@film.Dil"
+                           data-filmTur="@film.Tur"
+                           data-filmCikisTarihi="@film.CikisTarihi"
+                           data-filmFotoUrl="@film.FotoUrl">
+                            Güncelle
+                        </a>
+                    </div>
+                </div>
+            </div>
         }
-        else{
-        <img class="card-img-top" src="..." alt="Card image cap">
-        }
-        <div class="card-body">
-            <h5 class="card-title">@film.Isim</h5>
-            <p class="card-text">@film.Aciklama</p>
-        </div>
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">Süre : @film.Sure dakika.</li>
-            <li class="list-group-item">Dil : @film.Dil</li>
-            <li class="list-group-item">Tür : @film.Tur</li>
-            <li class="list-group-item">Cikis Tarihi : @film.CikisTarihi</li>
-        </ul>
-        <div class="card-body">
-            <a class="btn modalGuncelle" data-bs-toggle = "modal" 
-            data-bs-target = "#myModalGuncelle" data-filmId = "@film.Id" data-filmIsim ="@film.Isim" data-filmAciklama = "@film.Aciklama" 
-            data-filmSure = "@film.Sure" data-filmDil ="@film.Dil" data-filmTur ="@film.Tur" data-filmCikisTarihi ="@film.CikisTarihi" data-filmFotoUrl ="@film.FotoUrl">
-                Güncelle</a>
-            <a  class="btn">Gösterim Ekle</a>
-        </div>
     </div>
-}
+</div>
 
 <div class="modal" tabindex="-1" id="myModalGuncelle">
     <div class="modal-dialog">
@@ -51,7 +65,6 @@
                 <p class="mesaj"></p>
                 <form id = "filmFormGuncelle">
                     <div>
-                        <label></label>
                         <input type="hidden" class="form-control formId" name="Id" />
                     </div>
 
@@ -159,7 +172,7 @@
                 var sure = $(this).attr("data-filmSure");
                 var dil = $(this).attr("data-filmDil");
                 var tur = $(this).attr("data-filmTur");
-                var tarih = $(this).attr("data-filmCikisTarih");
+                var tarih = $(this).attr("data-filmCikisTarihi");
                 var foto_url = $(this).attr("data-filmFotoUrl");
 
                 $(".formId").val(id);
@@ -230,3 +243,33 @@
         );
     </script>
 }
+
+<style>
+ 
+    .custom-img {
+        width: 100%;
+        height: 600px; /* Adjust height as needed */
+        object-fit: cover;
+      
+    }
+
+
+    .card {
+        display: flex;
+        flex-direction: column;
+        height: 100%; /* Ensure the card takes full height */
+    }
+
+    .card-body {
+        flex-grow: 1; /* Allow card body to grow and push the button to the bottom */
+    }
+
+    .list-group-item {
+        flex-grow: 0; /* Prevent the list items from growing */
+    }
+
+    .mt-auto {
+        margin-top: auto; /* Push the button to the bottom */
+    }
+
+</style>

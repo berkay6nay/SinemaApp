@@ -36,3 +36,24 @@
         </div>
     </div>
 </form>
+
+<style>
+    .mesaj {
+        background-color: #fff3cd; /* Light yellow background */
+        color: #856404; /* Dark yellow text */
+        border: 1px solid #ffeeba; /* Light yellow border */
+        border-radius: 5px; /* Rounded corners */
+        padding: 15px; /* Add some padding */
+        margin-top: 15px; /* Add some space above */
+        font-size: 16px; /* Increase font size for better readability */
+        display: flex; /* Align items in a flexible box layout */
+        align-items: center; /* Center items vertically */
+        gap: 10px; /* Space between icon and text */
+    }
+
+        .mesaj::before {
+            content: "\26A0"; /* Unicode warning icon (⚠️) */
+            font-size: 20px; /* Icon size */
+            color: #856404; /* Icon color */
+        }
+</style>

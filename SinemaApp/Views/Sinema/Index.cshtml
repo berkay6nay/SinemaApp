@@ -5,8 +5,10 @@
 }
 @using SinemaApp.Models
 @model List<Sinema>
-
-<table class="table">
+<div>
+    <a class="btn btn-success modalSinemaEkle" data-bs-toggle="modal" data-bs-target="#myModalSinemaEkle">Sinema Ekle</a>
+</div>
+<table class="table table-hover">
     <thead>
         <tr>
             <th >İsim</th>
@@ -21,9 +23,9 @@
             <tr>
                 <td>@sinema.Isim</td>
                 <td>@sinema.Adres</td>
-                <td><a class="btn modalSinemaGuncelle" data-bs-toggle="modal" data-bs-target="#myModalSinemaGuncelle" data-sinemaGuncelleId ="@sinema.Id" data-sinemaIsim = "@sinema.Isim" data-sinemaAdres ="@sinema.Adres"> Güncelle </a></td>
-                <td><a class="btn modalSalonEkle" data-bs-toggle="modal" data-bs-target="#myModalSalonEkle" data-sinemaId ="@sinema.Id"> Salon Ekle </a></td>
-                <td><a asp-controller="Salon" asp-action="Listele" asp-route-id="@sinema.Id" > Salonları Görüntüle </a> </td>
+                <td><a class="btn btn-success modalSinemaGuncelle" data-bs-toggle="modal" data-bs-target="#myModalSinemaGuncelle" data-sinemaGuncelleId ="@sinema.Id" data-sinemaIsim = "@sinema.Isim" data-sinemaAdres ="@sinema.Adres"> Güncelle </a></td>
+                <td><a class="btn btn-success modalSalonEkle" data-bs-toggle="modal" data-bs-target="#myModalSalonEkle" data-sinemaId ="@sinema.Id"> Salon Ekle </a></td>
+                <td><a class = "btn btn-success"asp-controller="Salon" asp-action="Listele" asp-route-id="@sinema.Id" > Salonları Görüntüle </a> </td>
             </tr> 
         }
         
@@ -82,6 +84,35 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary sinemaGuncelle">Güncelle</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" tabindex="-1" id="myModalSinemaEkle">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Sinema Ekleme</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mesaj"></p>
+                <form id="SinemaGuncelleForm">
+                    <div>
+                        <label> Sinema İsmi: </label>
+                        <input class="form-control formEkleSinemaIsim" type="text" name="Isim" placeholder="Sinemanın ismini giriniz" />
+                    </div>
+                    <div>
+                        <label> Sinema Adresi: </label>
+                        <input class="form-control formEkleSinemaAdres" type="text" name="Adres" placeholder="Sinemanın adresini giriniz" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary sinemaEkle">Ekle</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
             </div>
         </div>
@@ -148,6 +179,30 @@
                     {
                         type: "POST",
                         url: "/Sinema/Guncelle/",
+                        data: formData,
+                        success: function (durum) {
+                            if (durum == "basarili") {
+                                window.location.replace("/Sinema/Index");
+                            }
+                            else {
+                                $(".modal-body>p.mesaj").html("Hata oluştu");
+                            }
+                        }
+                    }
+                )
+            }
+        );
+
+        $(".sinemaEkle").click(
+            function () {
+                var formData = {
+                    Isim: $(".formEkleSinemaIsim").val(),
+                    Adres: $(".formEkleSinemaAdres").val()
+                };
+                $.ajax(
+                    {
+                        type: "POST",
+                        url: "/Sinema/Ekle/",
                         data: formData,
                         success: function (durum) {
                             if (durum == "basarili") {

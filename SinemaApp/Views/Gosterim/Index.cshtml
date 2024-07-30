@@ -8,10 +8,10 @@
     var filmler = ViewBag.Filmler as List<SinemaApp.Models.Film>;
     var sinemalar = ViewBag.Sinemalar as List<SinemaApp.Models.Sinema>;
 }
-<h1>Gosterimler</h1>
-<a class="btn modalGosterimEkle" data-bs-toggle="modal" data-bs-target="#myModalEkle"> Gosterim Ekle </a>
+<h1>Gösterimler</h1>
+<a class="btn btn-success modalGosterimEkle" data-bs-toggle="modal" data-bs-target="#myModalEkle"> Gösterim Ekle </a>
 
-<table class="table">
+<table class="table table-hover">
     <thead>
         <tr>
             <th>Film Adı</th>
@@ -19,6 +19,7 @@
             <th>Sinema Adı</th>
             <th>Başlangıç</th>
             <th>Bitiş</th>
+            <th>Gösterimi İptal Et</th>
         </tr>
     </thead>
     <tbody>
@@ -32,6 +33,14 @@
                     <td>@gosterim.Salon?.Sinema?.Isim</td>
                     <td>@gosterim.Baslangic</td>
                     <td>@gosterim.Bitis</td>
+                    <td><button class="btn btn-danger modalGösterimİptal"
+                        data-bs-toggle="modal"
+                        data-bs-target="#myModalGösterimİptal" 
+                        data-gösterimId="@gosterim.Id" 
+                        data-film="@gosterim.Film.Isim"
+                        data-salon="@gosterim.Salon.Isim" 
+                        data-tarih="@gosterim.Baslangic" 
+                        data-sinema="@gosterim.Salon.Sinema.Isim">İptal Et</button></td>
                 </tr>
             }
         }
@@ -43,6 +52,26 @@
         }
     </tbody>
 </table>
+<div class="modal" tabindex="-1" id="myModalGösterimİptal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Gösterim İptal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body modal-body">
+                <p class="mesaj"></p>
+                <form>
+                        <input class="form-control formİptalId" type="hidden" name="Id"/>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-danger gösterimİptal">Gösterimi İptal Et</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal" tabindex="-1" id="myModalEkle">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -152,13 +181,55 @@
                             if (durum == "basarili") {
                                 window.location.replace("/Gosterim/Index");
                             }
+                            else if (durum == "hata") {
+                                $(".modal-body>p.mesaj").html("Seçilen salona herhangi bir koltuk eklenmemiş");
+                            }
                             else {
-                                $(".modal-body>p.mesaj").html("Secilen zaman araligi icin salon dolu");
+                                $(".modal-body>p.mesaj").html("Seçilen zaman aralığı için salon dolu");
                             }
                         }
                     }
                 )
             }
         );
+        $(".modalGösterimİptal").click(
+            function () {
+
+                var gösterimId = $(this).attr("data-gösterimId");
+                var film = $(this).attr("data-film");
+                var salon = $(this).attr("data-salon");
+                var film = $(this).attr("data-film");
+                var tarih = $(this).attr("data-tarih")
+                var sinema = $(this).attr("data-sinema")
+                $(".formİptalId").val(gösterimId);
+                var mesaj = sinema + " " + salon + " salonu " + film + " filmi için " + tarih + " tarihli gösterimi iptal etmek üzeresiniz."
+                $(".modal-body>p.mesaj").html(mesaj);   
+            }
+        );
+
+        $(".gösterimİptal").click(
+            function () {
+                var id = $(".formİptalId").val()
+                var formData = {
+                    id: id
+                };
+                $.ajax(
+                    {
+                        type: "POST",
+                        data: formData,
+                        url: "/Gosterim/IptalEt/",
+                        success: function (durum) {
+                            if (durum == "basarili") {
+                                window.location.replace("/Gosterim/Index/");
+                            }
+                            else {
+                                $(".modal-body>p.mesaj").html("Hata oluştu");
+                            }
+                        }
+                    }
+                )
+            }
+        );
+    
     </script>
 }
