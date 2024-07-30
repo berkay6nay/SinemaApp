@@ -44,7 +44,7 @@ namespace SinemaApp.Controllers
 
                 HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity)).Wait();
 
-                return RedirectToAction("Index"); // Or wherever you want to redirect after login
+                return RedirectToAction("Index"); 
             }
             else
             {
@@ -54,11 +54,11 @@ namespace SinemaApp.Controllers
 
         public IActionResult Cikis()
         {
-            // Sign out the user
+           
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).Wait();
 
-            // Redirect to the home page or login page after logout
-            return RedirectToAction("Index", "Home"); // Change this to the page you want to redirect to after logout
+            
+            return RedirectToAction("Index", "Home"); 
         }
 
 

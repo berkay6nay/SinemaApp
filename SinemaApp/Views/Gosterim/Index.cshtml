@@ -146,7 +146,7 @@
                             $('#salon').empty();
                             $('#salon').append('<option value="">Select Salon</option>');
                             $.each(data, function (index, salon) {
-                                console.log('Salon ID:', salon.id); // Debugging log
+                                console.log('Salon ID:', salon.id); 
                                 console.log('Salon Isim:', salon.isim);
                                 $('#salon').append('<option  value="' + salon.id + '">' + salon.isim + '</option>');
                             });

@@ -12,11 +12,11 @@ namespace SinemaApp.Controllers
         public IActionResult Index()
         {
             List<Film> filmler = db.Films.ToList();
-            List<Sinema> sinemalar = db.Sinemas.ToList();            // Retrieve the showings with related film, salon, and sinema data
+            List<Sinema> sinemalar = db.Sinemas.ToList();           
             List<Gosterim> gosterims = db.Gosterims
-                            .Include(g => g.Salon)                  // Include the related Salon
-                            .ThenInclude(s => s.Sinema)             // Include the related Sinema through Salon
-                            .Include(g => g.Film)                   // Include the related Film
+                            .Include(g => g.Salon)                 
+                            .ThenInclude(s => s.Sinema)            
+                            .Include(g => g.Film)                  
                             .ToList();
 
             ViewBag.Gosterims = gosterims;

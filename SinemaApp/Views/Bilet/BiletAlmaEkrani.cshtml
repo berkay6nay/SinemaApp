@@ -160,22 +160,22 @@
             const seats = document.querySelectorAll('.seat.available');
             seats.forEach(seat => {
                 seat.addEventListener('click', () => {
-                    const seatId = seat.getAttribute('data-id'); // Get the ID of the clicked seat
+                    const seatId = seat.getAttribute('data-id'); 
                     const seatRow = seat.getAttribute('data-row');
                     const seatNumber = seat.getAttribute('data-seat-number');
 
-                    // Toggle seat selection
+                    
                     if (seat.classList.contains('selected')) {
                         seat.classList.remove('selected');
-                        // Remove from the selectedSeats array
+                       
                         selectedSeats = selectedSeats.filter(id => id !== seatId);
                     } else {
                         seat.classList.add('selected');
-                        // Add to the selectedSeats array
+                        
                         selectedSeats.push(seatId);
                     }
 
-                    // Optionally log the selected seats to the console
+                    
                     console.log('Selected Seats:', selectedSeats);
                 });
             });
@@ -183,7 +183,7 @@
 
         $('.rezervasyonYap').click(function () {
             console.log('Selected Seats:', selectedSeats);
-            // You can now use the selectedSeats array to send data to your server
+            
             var kullaniciAdi = $(this).attr("data-kullaniciAdi");
             var gosterimId = $(this).attr("data-gosterimId");
             console.log(kullaniciAdi);

@@ -24,11 +24,11 @@ namespace SinemaApp.Controllers
         {
             Film film = db.Films.FirstOrDefault(x => x.Id == id);
 
-            // Retrieve the showings with related film, salon, and sinema data
+            
             List<Gosterim> gosterimler = db.Gosterims
-                .Include(g => g.Film)      // Include related Film data
-                .Include(g => g.Salon)     // Include related Salon data
-                    .ThenInclude(salon => salon.Sinema) // Include related Sinema data through Salon
+                .Include(g => g.Film)      
+                .Include(g => g.Salon)     
+                    .ThenInclude(salon => salon.Sinema) 
                 .Where(x => x.FilmId == id)
                 .ToList();
 
